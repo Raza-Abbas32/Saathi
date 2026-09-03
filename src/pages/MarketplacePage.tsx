@@ -739,6 +739,51 @@ export default function MarketplacePage() {
                     >
                       Cotton
                     </button>
+                    •
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          imageUrl:
+                            'https://images.unsplash.com/photo-1527842891421-42eec6e703ea?auto=format&fit=crop&w=800&q=80',
+                          imageAttribution: 'Sugarcane Crop Photography',
+                        })
+                      }
+                      className="underline hover:text-saathi-900"
+                    >
+                      Sugarcane
+                    </button>
+                    •
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          imageUrl:
+                            'https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=800&q=80',
+                          imageAttribution: 'Maize Field Photography',
+                        })
+                      }
+                      className="underline hover:text-saathi-900"
+                    >
+                      Maize
+                    </button>
+                    •
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          imageUrl:
+                            'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80',
+                          imageAttribution: 'Potato Harvest Photography',
+                        })
+                      }
+                      className="underline hover:text-saathi-900"
+                    >
+                      Potato
+                    </button>
                   </div>
                 </div>
 

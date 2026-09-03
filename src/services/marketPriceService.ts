@@ -85,6 +85,11 @@ export async function getGovernmentMarketPrices(
       return createFallbackResponse(`Backend API error: ${response.statusText}`);
     }
 
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      return createFallbackResponse('Backend returned non-JSON response');
+    }
+
     const data: MarketPricesApiResponse = await response.json();
     if (!data || !Array.isArray(data.prices) || data.prices.length === 0) {
       return createFallbackResponse('Empty or invalid response from market price service');
@@ -102,11 +107,16 @@ export async function getGovernmentMarketPrices(
  */
 export async function getGovernmentSources(): Promise<GovernmentSourceStatus[]> {
   try {
-    const response = await fetch('/api/market/sources');
+    const response = await fetch('/api/market/sources', {
+      headers: { Accept: 'application/json' },
+    });
     if (response.ok) {
-      const data = await response.json();
-      if (Array.isArray(data.sources)) {
-        return data.sources;
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await response.json();
+        if (Array.isArray(data.sources)) {
+          return data.sources;
+        }
       }
     }
   } catch (e) {

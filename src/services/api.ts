@@ -289,29 +289,34 @@ export async function getMarketplaceListings(): Promise<MarketplaceListing[]> {
 
   // First attempt backend API
   try {
-    const res = await fetch('/api/marketplace/listings');
+    const res = await fetch('/api/marketplace/listings', {
+      headers: { Accept: 'application/json' },
+    });
     if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        serverListings = (data as ApiListing[]).map((row) => ({
-          id: row.id,
-          userId: row.user_id,
-          cropName: row.crop_name,
-          quantity: row.quantity,
-          pricePerUnit: row.price_per_unit,
-          location: row.location,
-          farmerName: row.farmer_name,
-          description: row.description ?? '',
-          datePosted: formatRelativeTime(row.created_at),
-          listingOrigin: row.listing_origin || (row.is_persistent ? 'farmer' : 'demo'),
-          isPersistent: row.is_persistent ?? (row.listing_origin === 'farmer'),
-          expiresAt: row.expires_at,
-          imageUrl: row.image_url,
-          imageAttribution: row.image_attribution,
-          sourceType: row.source_type,
-          sourceUrl: row.source_url,
-          contactPhone: row.contact_phone,
-        }));
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          serverListings = (data as ApiListing[]).map((row) => ({
+            id: row.id,
+            userId: row.user_id,
+            cropName: row.crop_name,
+            quantity: row.quantity,
+            pricePerUnit: row.price_per_unit,
+            location: row.location,
+            farmerName: row.farmer_name,
+            description: row.description ?? '',
+            datePosted: formatRelativeTime(row.created_at),
+            listingOrigin: row.listing_origin || (row.is_persistent ? 'farmer' : 'demo'),
+            isPersistent: row.is_persistent ?? (row.listing_origin === 'farmer'),
+            expiresAt: row.expires_at,
+            imageUrl: row.image_url,
+            imageAttribution: row.image_attribution,
+            sourceType: row.source_type,
+            sourceUrl: row.source_url,
+            contactPhone: row.contact_phone,
+          }));
+        }
       }
     }
   } catch (err) {
@@ -509,18 +514,23 @@ export type ChatFeature = 'general' | 'disease' | 'crop' | 'marketplace';
 export async function getChatHistory(feature: ChatFeature = 'general'): Promise<ChatMessage[]> {
   // 1. Try server endpoint first
   try {
-    const res = await fetch(`/api/chat-history?feature=${encodeURIComponent(feature)}`);
+    const res = await fetch(`/api/chat-history?feature=${encodeURIComponent(feature)}`, {
+      headers: { Accept: 'application/json' },
+    });
     if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        return (data as ApiChatMessage[]).map((row) => ({
-          id: row.id,
-          sender: row.sender,
-          text: row.text,
-          imageUrl: row.imageUrl ?? row.image_url,
-          timestamp: new Date(row.created_at).getTime(),
-          feature,
-        }));
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          return (data as ApiChatMessage[]).map((row) => ({
+            id: row.id,
+            sender: row.sender,
+            text: row.text,
+            imageUrl: row.imageUrl ?? row.image_url,
+            timestamp: new Date(row.created_at).getTime(),
+            feature,
+          }));
+        }
       }
     }
   } catch (e) {

@@ -141,8 +141,8 @@ export const INITIAL_DEMO_SEED_LISTINGS: EnhancedMarketplaceListing[] = [
     expiresAt: null,
     sourceType: 'Example Demo Produce',
     sourceUrl: 'https://saathi.app/demo/sugarcane',
-    imageUrl: 'https://images.unsplash.com/photo-1596797882870-8c33deeac224?auto=format&fit=crop&w=800&q=80',
-    imageAttribution: 'Unsplash (Public Agricultural Photography)',
+    imageUrl: 'https://images.unsplash.com/photo-1527842891421-42eec6e703ea?auto=format&fit=crop&w=800&q=80',
+    imageAttribution: 'Unsplash (Sugarcane Crop Photography)',
     contactPhone: '+92 303 4567890',
   },
   {
