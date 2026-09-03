@@ -71,7 +71,29 @@ import {
   saveStoredFarmerListing,
   removeStoredFarmerListing,
   filterExpiredDemoListings,
+  INITIAL_DEMO_SEED_LISTINGS,
 } from './dealIntelligence';
+
+const DELETED_DEMO_KEY = 'saathi_deleted_demo_ids';
+
+function getDeletedDemoIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(DELETED_DEMO_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+function saveDeletedDemoId(id: string): void {
+  try {
+    const set = getDeletedDemoIds();
+    set.add(id);
+    localStorage.setItem(DELETED_DEMO_KEY, JSON.stringify(Array.from(set)));
+  } catch (err) {
+    console.warn('[Marketplace] Could not save deleted demo id:', err);
+  }
+}
 
 interface ApiListing {
   id: string;
@@ -379,6 +401,18 @@ export async function getMarketplaceListings(): Promise<MarketplaceListing[]> {
     }
   }
 
+  // Ensure default demo seed listings are always available (e.g. on static hosts like Vercel or when offline)
+  const hasDemoListing = combined.some((item) => item.listingOrigin === 'demo');
+  if (!hasDemoListing) {
+    const deletedDemoIds = getDeletedDemoIds();
+    for (const demoItem of INITIAL_DEMO_SEED_LISTINGS) {
+      if (!seenIds.has(demoItem.id) && !deletedDemoIds.has(demoItem.id)) {
+        seenIds.add(demoItem.id);
+        combined.push(demoItem);
+      }
+    }
+  }
+
   // Filter out any expired demo listings (farmer listings NEVER expire)
   return filterExpiredDemoListings(combined);
 }
@@ -485,8 +519,9 @@ export async function postListing(
 }
 
 export async function deleteListing(id: string): Promise<void> {
-  // Remove from local storage
+  // Remove from local storage and record deleted demo ID
   removeStoredFarmerListing(id);
+  saveDeletedDemoId(id);
 
   try {
     await fetch(`/api/marketplace/listings/${encodeURIComponent(id)}`, { method: 'DELETE' });
