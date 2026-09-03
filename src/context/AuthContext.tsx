@@ -147,6 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               if (codeData?.session && mounted) {
                 setSession(codeData.session);
                 fetchProfile(codeData.session.user.id, codeData.session.user.email);
+                window.dispatchEvent(new CustomEvent('saathi:auth-success'));
                 return;
               }
             }
@@ -163,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               if (tokenData?.session && mounted) {
                 setSession(tokenData.session);
                 fetchProfile(tokenData.session.user.id, tokenData.session.user.email);
+                window.dispatchEvent(new CustomEvent('saathi:auth-success'));
                 return;
               }
             }
@@ -172,6 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (sData?.session && mounted) {
             setSession(sData.session);
             fetchProfile(sData.session.user.id, sData.session.user.email);
+            window.dispatchEvent(new CustomEvent('saathi:auth-success'));
           }
         } catch (e) {
           console.warn('OAuth message handler error:', e);
@@ -206,6 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.warn('Google OAuth error:', error);
         // Seamless fallback to demo farmer account so the user is never blocked
         setDemoUser('farmer@saathi.pk', 'Muhammad Aslam');
+        window.dispatchEvent(new CustomEvent('saathi:auth-success'));
         return { success: true, error: null };
       }
 
@@ -237,6 +241,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (sData?.session) {
               setSession(sData.session);
               fetchProfile(sData.session.user.id, sData.session.user.email);
+              window.dispatchEvent(new CustomEvent('saathi:auth-success'));
             }
           }
         } catch {
@@ -250,6 +255,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.warn('Google sign-in exception:', err);
       setDemoUser('farmer@saathi.pk', 'Muhammad Aslam');
+      window.dispatchEvent(new CustomEvent('saathi:auth-success'));
       return { success: true, error: null };
     }
   };
@@ -259,11 +265,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         setDemoUser(email, email.split('@')[0] || 'Farmer');
+        window.dispatchEvent(new CustomEvent('saathi:auth-success'));
         return { error: null };
       }
+      window.dispatchEvent(new CustomEvent('saathi:auth-success'));
       return { error: null };
     } catch {
       setDemoUser(email, email.split('@')[0] || 'Farmer');
+      window.dispatchEvent(new CustomEvent('saathi:auth-success'));
       return { error: null };
     }
   };
@@ -273,17 +282,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) {
         setDemoUser(email, email.split('@')[0] || 'Farmer');
+        window.dispatchEvent(new CustomEvent('saathi:auth-success'));
         return { error: null };
       }
+      window.dispatchEvent(new CustomEvent('saathi:auth-success'));
       return { error: null };
     } catch {
       setDemoUser(email, email.split('@')[0] || 'Farmer');
+      window.dispatchEvent(new CustomEvent('saathi:auth-success'));
       return { error: null };
     }
   };
 
   const signInAsGuest = () => {
     setDemoUser('farmer@saathi.pk', 'Farmer Saathi (Guest)');
+    window.dispatchEvent(new CustomEvent('saathi:auth-success'));
   };
 
   const exchangeAuthCode = async (codeOrUrl: string): Promise<{ success: boolean; error: string | null }> => {
@@ -306,6 +319,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data?.session) {
         setSession(data.session);
         fetchProfile(data.session.user.id, data.session.user.email);
+        window.dispatchEvent(new CustomEvent('saathi:auth-success'));
         return { success: true, error: null };
       }
       return { success: false, error: 'Could not obtain session from code.' };

@@ -175,6 +175,7 @@ export default function AssistantPage() {
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const currentThread = threads[activeFeature];
@@ -414,11 +415,13 @@ export default function AssistantPage() {
     }
   }, [activeFeature]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Auto-scroll ───────────────────────────────────────────────────────────
+  // ── Auto-scroll (scrolls internal message container without jumping page) ──
 
   const activeMessages = threads[activeFeature].messages;
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [activeMessages, sending]);
 
   // ── Send message ──────────────────────────────────────────────────────────
@@ -574,13 +577,13 @@ export default function AssistantPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-slate-900 text-sm tracking-tight">{activeConfig.label}</h3>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-semibold border border-emerald-200/70">
+                <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-semibold border border-emerald-200/70 animate-text-pulse">
                   Online
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium">
                 {sending ? (
-                  <span className="text-emerald-600 flex items-center gap-1 font-semibold">
+                  <span className="text-emerald-600 flex items-center gap-1 font-semibold animate-text-loading">
                     <Loader2 className="w-3 h-3 animate-spin inline" />
                     {statusMessage || 'Analyzing agronomic query…'}
                   </span>
@@ -652,7 +655,10 @@ export default function AssistantPage() {
         </div>
 
         {/* ── Messages Thread ── */}
-        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 space-y-4 bg-gradient-to-b from-slate-50/60 via-slate-50/30 to-white">
+        <div
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 space-y-4 bg-gradient-to-b from-slate-50/60 via-slate-50/30 to-white"
+        >
           {/* Loading history */}
           {currentThread.loading && (
             <div className="flex flex-col items-center justify-center h-full">

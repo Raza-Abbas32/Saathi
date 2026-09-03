@@ -225,7 +225,7 @@ export default function FarmProfileForm({ onSaved, showCardWrapper = true }: Far
       {/* Notification banner */}
       {message && (
         <div
-          className={`p-3 rounded-xl text-sm flex items-center gap-2 animate-fade-in ${
+          className={`p-3 rounded-xl text-sm flex items-center gap-2 animate-fade-in animate-text-success ${
             message.type === 'success'
               ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
               : 'bg-saathi-50 text-saathi-800 border border-saathi-200'

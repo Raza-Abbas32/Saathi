@@ -122,7 +122,7 @@ export default function HomePage() {
 
   const handleGetStarted = () => {
     if (user) {
-      navigate('/disease-detection');
+      navigate('/farm-profile');
     } else {
       window.dispatchEvent(new CustomEvent('saathi:auth-required'));
     }

@@ -274,7 +274,7 @@ export default function DiseaseDetectionPage() {
             isCompressing ? (
               <div className="border-2 border-dashed border-saathi-200 rounded-xl p-12 flex flex-col items-center justify-center text-center bg-saathi-50 transition-all">
                 <Loader2 className="w-8 h-8 text-saathi-500 animate-spin mb-4" />
-                <p className="text-saathi-700 font-medium">Optimizing image...</p>
+                <p className="text-saathi-700 font-medium animate-text-loading">Optimizing image...</p>
                 <p className="text-saathi-400 text-sm mt-1">Getting it ready for AI analysis</p>
               </div>
             ) : (
@@ -328,7 +328,7 @@ export default function DiseaseDetectionPage() {
               {isAnalyzing ? (
                 <div className="flex flex-col items-center justify-center gap-3 py-6">
                   <Loader2 className="w-8 h-8 text-saathi-500 animate-spin" />
-                  <p className="text-saathi-600 font-medium">Analyzing crop leaf photo with Saathi AI…</p>
+                  <p className="text-saathi-600 font-medium animate-text-loading">Analyzing crop leaf photo with Saathi AI…</p>
                   <p className="text-saathi-400 text-sm">Identifying disease & preparing treatment plan...</p>
                 </div>
               ) : (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Loader2, Mail, Lock, User as UserIcon, KeyRound, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -10,7 +11,8 @@ interface AuthModalProps {
 type Mode = 'login' | 'signup';
 
 export default function AuthModal({ open, onClose }: AuthModalProps) {
-  const { signInWithGoogle, signInWithEmail, signUpWithEmail, signInAsGuest, exchangeAuthCode } = useAuth();
+  const { user, signInWithGoogle, signInWithEmail, signUpWithEmail, signInAsGuest, exchangeAuthCode } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
@@ -24,6 +26,13 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
   const [copiedUrl, setCopiedUrl] = useState(false);
 
   const currentRedirectUrl = `${window.location.origin}/auth/callback`;
+
+  // Automatically close modal when user is authenticated
+  useEffect(() => {
+    if (user && open) {
+      onClose();
+    }
+  }, [user, open, onClose]);
 
   useEffect(() => {
     if (!open) {
@@ -59,8 +68,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
           setError(res.error || 'Could not start Google sign-in. Please try again.');
         }
       } else {
-        // Modal will close automatically once session is established
-        setTimeout(() => setLoading(false), 2500);
+        // Modal will close automatically via auth listener/events
       }
     } catch {
       setLoading(false);
@@ -77,6 +85,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
     setCodeLoading(false);
     if (res.success) {
       onClose();
+      navigate('/', { replace: true });
     } else {
       setError(res.error || 'Could not verify this code. Please try again.');
     }
@@ -108,6 +117,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
       setLoading(false);
     } else {
       onClose();
+      navigate('/', { replace: true });
     }
   };
 
@@ -164,6 +174,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
           onClick={() => {
             signInAsGuest();
             onClose();
+            navigate('/', { replace: true });
           }}
           type="button"
           className="w-full inline-flex items-center justify-center gap-2 bg-saathi-50 border border-saathi-200 text-saathi-700 font-medium px-4 py-2.5 rounded-xl hover:bg-saathi-100 active:scale-95 transition-all text-sm mb-3"

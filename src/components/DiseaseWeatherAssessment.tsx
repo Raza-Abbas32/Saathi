@@ -76,7 +76,7 @@ export default function DiseaseWeatherAssessment({
     },
     avoid: {
       card: 'bg-rose-50/70 border-rose-200/90 text-rose-950',
-      badge: 'bg-rose-100 text-rose-800 border-rose-300',
+      badge: 'bg-rose-100 text-rose-800 border-rose-300 animate-text-pulse',
       icon: AlertOctagon,
       iconColor: 'text-rose-600',
       label: 'Treatment Timing: Avoid',

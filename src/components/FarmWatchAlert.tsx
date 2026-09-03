@@ -54,7 +54,7 @@ export function FarmWatchAlert({
     switch (event.severity) {
       case 'HIGH':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200 animate-text-pulse">
             High Attention
           </span>
         );

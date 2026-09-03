@@ -20,8 +20,8 @@ import AuthCallbackPage from '@/pages/AuthCallbackPage';
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
           <Routes>
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route
@@ -116,8 +116,8 @@ function App() {
               }
             />
           </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }

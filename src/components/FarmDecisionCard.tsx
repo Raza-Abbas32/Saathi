@@ -87,7 +87,9 @@ export default function FarmDecisionCard() {
                 Saathi Farm Intelligence
               </h2>
               <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusBadge.bg}`}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusBadge.bg} ${
+                  overallStatus === 'action_needed' ? 'animate-text-pulse' : ''
+                }`}
               >
                 <span className={`w-1.5 h-1.5 rounded-full ${statusBadge.dot}`} />
                 {statusBadge.label}

@@ -1,9 +1,10 @@
 import { type ReactNode, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
 import AuthModal from '@/components/AuthModal';
+import { useAuth } from '@/context/AuthContext';
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,6 +20,8 @@ const FOCUSED_PAGES = [
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [bgLoaded, setBgLoaded] = useState(false);
 
@@ -29,6 +32,25 @@ export default function Layout({ children }: LayoutProps) {
     window.addEventListener('saathi:auth-required', handler);
     return () => window.removeEventListener('saathi:auth-required', handler);
   }, []);
+
+  // Close modal and redirect directly to HomePage upon successful login/signup
+  useEffect(() => {
+    const handleAuthSuccess = () => {
+      setAuthModalOpen(false);
+      if (location.pathname !== '/') {
+        navigate('/', { replace: true });
+      }
+    };
+    window.addEventListener('saathi:auth-success', handleAuthSuccess);
+    return () => window.removeEventListener('saathi:auth-success', handleAuthSuccess);
+  }, [navigate, location.pathname]);
+
+  // Keep modal closed whenever an authenticated user exists
+  useEffect(() => {
+    if (user) {
+      setAuthModalOpen(false);
+    }
+  }, [user]);
 
   // Lazy-load the background image so it doesn't block initial paint
   useEffect(() => {

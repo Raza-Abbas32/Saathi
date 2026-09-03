@@ -140,7 +140,7 @@ export default function ProfilePage() {
         </div>
 
         {message && (
-          <div className="mt-4 text-sm text-saathi-600 bg-saathi-50 rounded-lg px-3 py-2 text-center">
+          <div className="mt-4 text-sm text-saathi-600 bg-saathi-50 rounded-lg px-3 py-2 text-center animate-text-success">
             {message}
           </div>
         )}

@@ -348,7 +348,6 @@ export default function WeatherDropdown({ onClose }: WeatherDropdownProps) {
               onChange={(e) => handleCityQueryChange(e.target.value)}
               placeholder="Search city or region…"
               className="input-field pl-10"
-              autoFocus
             />
             {citySearching && (
               <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-saathi-400 animate-spin" />

@@ -6,7 +6,7 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
   body {
     @apply bg-cream text-saathi-900 font-sans antialiased;
@@ -127,12 +127,53 @@
   animation: slide-down 0.2s ease-out;
 }
 
+/* Subtle, professional text animations */
+@keyframes text-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-text-fade-in {
+  animation: text-fade-in 0.3s ease-out;
+}
+
+@keyframes text-pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.75; }
+}
+.animate-text-pulse {
+  animation: text-pulse-subtle 2.5s ease-in-out infinite;
+}
+
+@keyframes text-success-fade {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+.animate-text-success {
+  animation: text-success-fade 0.35s ease-out;
+}
+
+@keyframes text-loading-pulse {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1; }
+}
+.animate-text-loading {
+  animation: text-loading-pulse 1.8s ease-in-out infinite;
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-bg-drift,
   .animate-slide-up,
-  .animate-slide-down {
-    animation: none;
+  .animate-slide-down,
+  .animate-fade-in,
+  .animate-pulse,
+  .animate-pulse-soft,
+  .animate-text-fade-in,
+  .animate-text-pulse,
+  .animate-text-success,
+  .animate-text-loading {
+    animation: none !important;
+    transition: none !important;
   }
   html {
     scroll-behavior: auto;

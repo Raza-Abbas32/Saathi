@@ -40,12 +40,12 @@ export default function AuthCallbackPage() {
             } catch {
               window.location.replace('/');
             }
-          }, 400);
+          }, 200);
         } else {
           setStatus('success');
           setTimeout(() => {
             window.location.replace('/');
-          }, 500);
+          }, 300);
         }
       } catch (err) {
         console.error('Error handling auth callback:', err);
