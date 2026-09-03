@@ -1,0 +1,10 @@
+{
+  "name": "Saathi",
+  "description": "AI farming companion empowering Pakistani farmers to detect crop diseases, choose crops, view fair market prices, sell directly, and get farming guidance.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

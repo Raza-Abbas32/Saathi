@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          if (typeof window !== 'undefined') {
+            // Suppress uncaught error if an external script tries to assign to read-only fetch
+            window.addEventListener('error', function (event) {
+              if (
+                event &&
+                event.message &&
+                typeof event.message === 'string' &&
+                event.message.indexOf('fetch') !== -1 &&
+                event.message.indexOf('only a getter') !== -1
+              ) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                return true;
+              }
+            });
+
+            var _origFetch = typeof window.fetch === 'function' ? window.fetch.bind(window) : undefined;
+            var _activeFetch = _origFetch;
+
+            // 1. Check Window.prototype
+            if (typeof Window !== 'undefined' && Window.prototype) {
+              var protoDesc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+              if (protoDesc && !protoDesc.set && protoDesc.configurable) {
+                Object.defineProperty(Window.prototype, 'fetch', {
+                  get: function () {
+                    return _activeFetch || _origFetch;
+                  },
+                  set: function (val) {
+                    _activeFetch = val;
+                  },
+                  configurable: true,
+                  enumerable: true,
+                });
+              }
+            }
+
+            // 2. Ensure window instance has writable/configurable fetch accessor
+            var winDesc = Object.getOwnPropertyDescriptor(window, 'fetch');
+            if (!winDesc || (!winDesc.set && !winDesc.writable && winDesc.configurable !== false)) {
+              Object.defineProperty(window, 'fetch', {
+                get: function () {
+                  return _activeFetch || _origFetch;
+                },
+                set: function (val) {
+                  _activeFetch = val;
+                },
+                configurable: true,
+                enumerable: true,
+              });
+            }
+          }
+        } catch (e) {
+          // Graceful fallback
+        }
+      })();
+    </script>
+    <link rel="icon" type="image/png" href="/Logo/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saathi — AI Farming Companion</title>
+    <meta name="description" content="Saathi empowers Pakistani farmers with AI-driven tools to detect crop diseases, choose the right crops, understand fair market prices, sell directly, and get instant farming guidance." />
+    <meta property="og:title" content="Saathi — AI Farming Companion" />
+    <meta property="og:description" content="AI-powered farming companion for Pakistani farmers." />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

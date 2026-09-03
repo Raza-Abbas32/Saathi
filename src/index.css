@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-saathi-900 font-sans antialiased;
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  .hero-box {
+    @apply bg-white rounded-hero shadow-hero transition-all duration-300;
+  }
+  .hero-box-soft {
+    @apply bg-saathi-50 rounded-hero shadow-hero transition-all duration-300;
+  }
+  .hero-card {
+    @apply bg-white rounded-hero shadow-hero p-6 transition-all duration-300 hover:shadow-hero-hover hover:-translate-y-1;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-saathi-500 text-white font-semibold px-6 py-3 rounded-xl shadow-hero hover:bg-saathi-600 hover:shadow-hero-hover active:scale-95 transition-all duration-200;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-saathi-50 text-saathi-700 font-semibold px-6 py-3 rounded-xl hover:bg-saathi-100 active:scale-95 transition-all duration-200;
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 bg-harvest-500 text-saathi-900 font-semibold px-6 py-3 rounded-xl shadow-hero hover:bg-harvest-600 hover:shadow-hero-hover active:scale-95 transition-all duration-200;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-saathi-700 font-medium px-4 py-2 rounded-lg hover:bg-saathi-50 transition-all duration-200;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-saathi-200 bg-white text-saathi-900 placeholder-saathi-300 focus:outline-none focus:ring-2 focus:ring-saathi-400 focus:border-transparent transition-all duration-200;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  select.input-field {
+    @apply pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B8E6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+  }
+  .section-title {
+    @apply text-2xl sm:text-3xl font-bold text-saathi-900;
+  }
+  .section-subtitle {
+    @apply text-saathi-600 text-base sm:text-lg;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #A5D6A5;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #81C784;
+}
+
+/* Touch-friendly minimum targets on mobile */
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-accent,
+  .btn-ghost,
+  .input-field {
+    min-height: 44px;
+  }
+}
+
+/* Safe-area spacing for bottom nav */
+.pb-safe {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+}
+
+/* Background drift animation — subtle, slow, atmospheric */
+@keyframes bg-drift {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bg-drift {
+  animation: bg-drift 40s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Slide up animation for onboarding tour */
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out;
+}
+
+/* Slide down animation for navbar dropdowns */
+@keyframes slide-down {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.animate-slide-down {
+  animation: slide-down 0.2s ease-out;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bg-drift,
+  .animate-slide-up,
+  .animate-slide-down {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

@@ -1,0 +1,13 @@
+project_id = "gzldpyssirdpqspstadu"
+
+[functions.disease-detection]
+verify_jwt = true
+
+[functions.crop-recommendation]
+verify_jwt = true
+
+[functions.farming-assistant]
+verify_jwt = true
+
+[functions.marketplace-assistant]
+verify_jwt = true
